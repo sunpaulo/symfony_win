@@ -1,0 +1,40 @@
+version: "2"
+
+services:
+  php:
+    environment:
+      APP_NAME: Symfony
+    volumes:
+      - /d/symfony/code:/var/app
+    networks:
+      - application
+
+  mysql:
+    image: mysql
+    restart: always
+    command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci',
+              '--default-authentication-plugin=mysql_native_password', '--innodb_use_native_aio=0']
+    volumes:
+      - /d/symfony/persistent-data/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: homestead
+      MYSQL_USER: homestead
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_HOST: '%'
+    networks:
+      - application
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - /d/symfony/config/nginx/snippets:/etc/nginx/snippets
+      - /d/symfony/config/nginx/conf.d:/etc/nginx/conf.d
+      - /d/symfony/code/public:/var/app/public
+    networks:
+      - application
+
+networks:
+  application:
+    driver: bridge
+

@@ -1,0 +1,5 @@
+/.idea
+/.vagrant
+/persistent-data
+/code/public/css/app.*
+/code/public/js/app.*
